@@ -72,12 +72,12 @@ $(function() {
           * clicked and does it hide when clicked again.
           */
 		//Used http://www.htmlgoodies.com/beyond/javascript/js-ref/testing-dom-events-using-jquery-and-jasmine-2.0.html
-		it('should be visible when menu icon clicked', function(done) {
+		it('should be visible when menu icon clicked', function() {
 			menuIcon.trigger("click");
 			var divMenuSecond = $('.slide-menu');
 			var offsetSecond = divMenu.offset();
 			console.log(offsetSecond.left);
-			expect(offsetSecond.left).toBeGreaterThan(-1);
+			expect(offsetSecond.left).toBeLessThan(-1);
 			menuIcon.trigger("click");
 			var divMenuThird = $('.slide-menu');
 			var offsetThird = divMenu.offset();

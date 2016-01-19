@@ -102,7 +102,7 @@ $(function() {
 		 });
 		 //makes sure that there is an .entry in .feeder
 		 it('.feeder container has at least single .entry element', function(done) {
-			expect($('.entry').length).not.toBe(0)
+			expect($('.entry').length).not.toBe(0);
 			done();
 		 });
 	});
@@ -121,8 +121,8 @@ $(function() {
 		//make sure that .header-title changed and that .entry html is not empty
 		it('content actually changes', function(done) {
 			var innerText = $('.header-title').html();
-			expect(innerText).not.toBe('Feeds')
-			expect($('.entry').html().length).not.toBe(0) 
+			expect(innerText).not.toBe('Feeds');
+			expect($('.entry').html().length).not.toBe(0);
 			done();
 		});
 	});

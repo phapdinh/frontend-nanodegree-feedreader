@@ -93,12 +93,20 @@ google.setOnLoadCallback(init);
  * place our code in the $() function to ensure it doesn't execute
  * until the DOM is ready.
  */
+ 
+var menuIcon = $('.menu-icon-link');
+ 
+/* When the menu icon is clicked on, we need to toggle a class
+* on the body to perform the hiding/showing of our menu.
+*/
+menuIcon.on('click', function() {
+    $('body').toggleClass('menu-hidden');
+});
 $(function() {
     var container = $('.feed'),
         feedList = $('.feed-list'),
         feedItemTemplate = Handlebars.compile($('.tpl-feed-list-item').html()),
-        feedId = 0,
-        menuIcon = $('.menu-icon-link');
+        feedId = 0;
 
     /* Loop through all of our feeds, assigning an id property to
      * each of the feeds based upon its index within the array.
@@ -123,12 +131,5 @@ $(function() {
         $('body').addClass('menu-hidden');
         loadFeed(item.data('id'));
         return false;
-    });
-
-    /* When the menu icon is clicked on, we need to toggle a class
-     * on the body to perform the hiding/showing of our menu.
-     */
-    menuIcon.on('click', function() {
-        $('body').toggleClass('menu-hidden');
     });
 }());

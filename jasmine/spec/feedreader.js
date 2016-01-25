@@ -30,14 +30,14 @@ $(function() {
 			//loops through the allFeeds array and makes sure the url field is defined and has a value
 			allFeeds.forEach(function(feed) {
 				expect(feed.url).toBeDefined();
-				expect(feed.url).not.toBe("");
+				expect(feed.url).not.toBe('');
 			});
 		});
-		it('name not empty', function() {
+		it('name not empty and is defined', function() {
 			//loops through the allFeeds array and makes sure the name field is defined and has a value
 			allFeeds.forEach(function(feed) {
 				expect(feed.name).toBeDefined();
-				expect(feed.name).not.toBe("");
+				expect(feed.name).not.toBe('');
 			}); 
 		});
     });
@@ -53,11 +53,11 @@ $(function() {
 		//Used https://github.com/bcuz/feedreader/blob/master/jasmine/spec/feedreader.js from discussion forum
 		it('should be visible when menu icon clicked', function() {
 			//removes menu-hidden class from body element
-			$('body').toggleClass('menu-hidden');
+			$('.menu-icon-link').trigger('click');
 			//if element is removed then hasClass should return false
 			expect($("body").hasClass("menu-hidden")).toBe(false);
 			//adds menu-hidden class to body element
-			$('body').toggleClass('menu-hidden');
+			$('.menu-icon-link').trigger('click');
 			//if element is removed then hasClass should return true
 			expect($("body").hasClass("menu-hidden")).toBe(true);
 		});
@@ -79,34 +79,29 @@ $(function() {
 		previousFeedLink, newFeedLink,
 		previousContent, newContent;
 
-		var feeds = window.allFeeds,
-		numberOfFeeds = feeds.length,
-		numberOfFeedsLoaded = 0,
-		contentAlwaysChanges = true;
+		var contentAlwaysChanges = true;
+		
+		beforeEach(function(done) {
+			loadFeed(0, function() {
+				// This should resolve to a string containing the entire html content
+				// of the feed section:
+				newContent = $('.feed').html();
 
+				// Should resolve to something like "Udacity Blog":
+				newFeedTitle = $('.header-title').text();
 
-		it('produces new entries for every feed source', function(done) {
-			feeds.forEach(function(feed) {
-				window.loadFeed(feed.id, readyCheckNewContent);
+				// Should resolve to something like "http://blog.udacity.com/abcdefg":
+				newFeedLink = $('.feed .entry-link')[0].href;
+
+				previousContent = true;
+				
+				done();
 			});
-
-			function readyCheckNewContent() {
-				numberOfFeedsLoaded++;
-				if (!previousContent) {
-
-					// This should resolve to a string containing the entire html content
-					// of the feed section:
-					newContent = $('.feed').html();
-
-					// Should resolve to something like "Udacity Blog":
-					newFeedTitle = $('.header-title').text();
-
-					// Should resolve to something like "http://blog.udacity.com/abcdefg":
-					newFeedLink = $('.feed .entry-link')[0].href;
-
-					previousContent = true;
-				}
-				else {
+		});
+		
+		beforeEach(function(done) {
+			loadFeed(1, function() {
+				if(previousContent) {
 					//if previous content is defined then loads previous content, feedtitle, and feedlink with previous content, feedtitle, and feedlink
 					previousContent = newContent;
 					previousFeedTitle = newFeedTitle;
@@ -122,17 +117,19 @@ $(function() {
 						contentAlwaysChanges = false;
 					}
 				}
-				//If contentAlwaysChanges is equal to true then test passes
-				if (numberOfFeedsLoaded >= numberOfFeeds) {
-					expect(contentAlwaysChanges).toBe(true);
-					done();
-				}
-			}
+				done();
+			});
 		});
-
+		
+		it('produces new entries when a new feed is loaded', function(done) {
+			//If contentAlwaysChanges is equal to true then test passes
+			expect(contentAlwaysChanges).toBe(true);
+			done();
+		});
+		
 		//after test loads the feed with first id
 		afterAll(function() {
-			window.loadFeed(0);
+			loadFeed(0);
 		});
 	});
 }());

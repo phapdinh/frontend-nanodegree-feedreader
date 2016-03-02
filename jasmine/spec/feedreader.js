@@ -98,7 +98,7 @@ $(function() {
 				done();
 			});
 		});
-		
+
 		beforeEach(function(done) {
 			loadFeed(1, function() {
 				if(previousContent) {

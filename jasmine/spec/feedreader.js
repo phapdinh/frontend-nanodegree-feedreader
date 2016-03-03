@@ -100,7 +100,7 @@ $(function() {
 		});
 
 		beforeEach(function(done) {
-			loadFeed(1, function() {
+			loadFeed(2, function() {
 				if(previousContent) {
 					//if previous content is defined then loads previous content, feedtitle, and feedlink with previous content, feedtitle, and feedlink
 					previousContent = newContent;
